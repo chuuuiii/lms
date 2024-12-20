@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import { connectDB } from './config/db.js';
 import { config } from './config/env.js';
 import userRoutes from './routes/user.routes.js';
+import errorHandler from './middlewares/errorMiddleware.js';
 
 
 const app = express();
@@ -18,6 +19,9 @@ app.use(morgan('dev'))
 
 //routes
 app.use('/api/users', userRoutes)
+
+//error handling
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send('Server ready')
