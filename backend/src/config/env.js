@@ -12,6 +12,10 @@ if (!process.env.MONGO_URI) {
   process.exit(1);
 };
 
+// if (!process.env.SECRET_KEY) {
+//   console.error('SECRET_KEY environment is not defined');
+// }
+
 export const config = {
   port: process.env.PORT,
   mongoURI: process.env.MONGO_URI,
