@@ -36,3 +36,25 @@ export const createUser = asyncHandler(async (req, res) => {
   }});
 
 });
+
+
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password} = req.body;
+
+  if (!email || !password) {
+    throw createError(400, 'Please provide all the required fields')
+  }
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createError(404, 'Invalid credentials')
+  }
+  const isPassword = await bcrypt.compare(password, user.password);
+  if (!isPassword) {
+    throw createError(404, 'Invalid credentials');
+  }
+
+  const token = generateToken(user._id);
+  res.status(200).json({ success: true, message: 'User logged in successfully', user: { _id: user._id, name: user.name, email: user.email, role: user.role, token: token } })
+
+});
