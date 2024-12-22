@@ -19,6 +19,13 @@ const BookSchema = new Schema({
     ],
     required: [true, 'Please select genre']
   },
+  ISBN: {
+    type: String,
+    required: [true, 'Please provide ISBN number'],
+    unique: true,
+    minLength: [10, 'ISBN must be minimum of 10 characters long'],
+    maxLength: [13, 'ISBN must be maximum of 13 characters long']
+  },
   availability: {
     type: Boolean,
     default: true,

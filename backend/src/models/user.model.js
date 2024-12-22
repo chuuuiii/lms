@@ -29,7 +29,7 @@ const UserSchema = new Schema({
   },
   membershipStatus: {
     type: String,
-    enum: ['active', 'inactive', 'suspended'],
+    enum: ['Active', 'Inactive', 'Suspended'],
     default: 'Active'
   },
   memberShipDate: {
