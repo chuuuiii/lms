@@ -5,6 +5,7 @@ import { connectDB } from './config/db.js';
 import { config } from './config/env.js';
 import userRoutes from './routes/user.routes.js';
 import errorHandler from './middlewares/errorMiddleware.js';
+import bookRoutes from './routes/book.routes.js';
 
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(morgan('dev'))
 
 //routes
 app.use('/api/users', userRoutes)
+app.use('/api/books', bookRoutes)
 
 //error handling
 app.use(errorHandler);
