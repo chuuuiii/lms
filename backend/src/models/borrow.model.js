@@ -26,12 +26,12 @@ const BorrowSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['Active', 'Inactive', 'Suspended'],
+    enum: ['Active', 'Returned'],
     default: 'Active'
   }
 }, { timestamps: true});
 
-//update book availability
+//update book availability - negative
 BorrowSchema.pre('save', async function (next) {
   if (this.isNew) {
     const book = await this.model('Book').findById(this.book);

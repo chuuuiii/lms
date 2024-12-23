@@ -41,3 +41,39 @@ export const borrowBook = AsyncHandler(async (req, res) => {
 
   res.status(201).json({ success: true, message: 'Book borrowed successfully', borrow })
 });
+
+
+export const returnBook = AsyncHandler(async (req, res) => {
+  const { id } = req.params; 
+  
+  // Find the borrow record
+  const borrow = await Borrow.findById(id);
+  
+  if (!borrow) {
+    throw createError(404, 'Borrow record not found');
+  }
+
+  if (borrow.status === 'Returned') {
+    throw createError(400, 'Book already returned');
+  }
+
+  // Update book availability -reflect
+  await Book.findByIdAndUpdate(
+    borrow.book,
+    {
+      $inc: { currentBorrows: -1 }
+    }
+  );
+
+  // Update borrow record
+  borrow.returnDate = new Date();
+  borrow.status = 'Returned';
+  await borrow.save();
+
+  res.json({ success: true, message: 'Book returned successfully', data: {borrowId: borrow._id,bookId: borrow.book,
+      userId: borrow.user,
+      returnDate: borrow.returnDate,
+      status: borrow.status
+    }
+  });
+});

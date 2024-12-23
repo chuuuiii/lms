@@ -48,11 +48,6 @@ const UserSchema = new Schema({
 }, { timestamps: true });
 
 
-//check if user can borrow more books
-// UserSchema.virtual('canBorrow').get(function () {
-//   return this.borrowedBooks.length < this.maxBooksAllowed && this.membershipStatus === 
-//   'Active'
-// });
 
 const User = mongoose.model('User', UserSchema);
 export default User;
