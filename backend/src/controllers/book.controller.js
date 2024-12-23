@@ -8,7 +8,11 @@ export const getAllBooks = AsyncHandler (async (req, res) => {
 
   const books = await Book.find({}).sort({ createdAt: -1 });
 
-  res.status(200).json(books);
+  if (!books || books.length === 0) {
+    res.status(200).json({ success: true, message: 'No books available' });
+  }
+
+  res.status(200).json({ success: true, message: 'Books successfully fetched', books });
 
 });
 
@@ -20,6 +24,7 @@ export const createBook = AsyncHandler(async (req, res) => {
     res.status(400)
     throw createError(400, 'Please provide all the required fields');
   }
+
 
   const bookExists = await Book.findOne({ ISBN});
   if (bookExists) {
