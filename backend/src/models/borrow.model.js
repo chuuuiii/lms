@@ -31,5 +31,14 @@ const BorrowSchema = new Schema({
   }
 }, { timestamps: true});
 
+//update book availability
+BorrowSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    await this.model('Book').findByIdAndUpdate(this.book, { $inc: { currentBorrows: 1 }, availability: false });
+  }
+  next()
+  }
+);
+
 const Borrow = mongoose.model('Borrow', BorrowSchema);
 export default Borrow;

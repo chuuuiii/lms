@@ -6,6 +6,7 @@ import { config } from './config/env.js';
 import userRoutes from './routes/user.routes.js';
 import errorHandler from './middlewares/errorMiddleware.js';
 import bookRoutes from './routes/book.routes.js';
+import borrowRoutes from './routes/borrow.route.js';
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use(morgan('dev'))
 //routes
 app.use('/api/users', userRoutes)
 app.use('/api/books', bookRoutes)
+app.use('/api/borrow', borrowRoutes)
 
 //error handling
 app.use(errorHandler);
