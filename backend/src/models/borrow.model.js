@@ -34,7 +34,14 @@ const BorrowSchema = new Schema({
 //update book availability
 BorrowSchema.pre('save', async function (next) {
   if (this.isNew) {
-    await this.model('Book').findByIdAndUpdate(this.book, { $inc: { currentBorrows: 1 }, availability: false });
+    // await this.model('Book').findByIdAndUpdate(this.book, { $inc: { currentBorrows: 1 }, availability: false });
+    const book = await this.model('Book').findById(this.book);
+
+    if (book) {
+      const updateBorrowCount = book.currentBorrows + 1;
+
+      await book.updateOne({ currentBorrows: updateBorrowCount, availability: updateBorrowCount < book.totalCopies });
+    }
   }
   next()
   }
