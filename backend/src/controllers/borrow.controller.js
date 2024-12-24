@@ -45,7 +45,7 @@ export const borrowBook = AsyncHandler(async (req, res) => {
 
 export const returnBook = AsyncHandler(async (req, res) => {
   const { id } = req.params; 
-  
+
   // Find the borrow record
   const borrow = await Borrow.findById(id);
   
@@ -69,6 +69,9 @@ export const returnBook = AsyncHandler(async (req, res) => {
   borrow.returnDate = new Date();
   borrow.status = 'Returned';
   await borrow.save();
+
+  //remove the borrowed book from the user when the book is return and return the value to 0
+  await User.findByIdAndUpdate(borrow.user, { $pull: { borrowedBooks: borrow._id } });
 
   res.json({ success: true, message: 'Book returned successfully', data: {borrowId: borrow._id,bookId: borrow.book,
       userId: borrow.user,
